@@ -28,6 +28,7 @@ public abstract class JSoupAvailabilityChecker implements AvailabilityChecker {
         Map<String, Availability> productAvailability = new HashMap<>();
         for(String pageURL : pageURLs) {
             Availability availability = checkAvailability(Jsoup.connect(pageURL).get());
+
             if(availability == Availability.AVAILABLE) {
                 try {
                     SystemTrayNotifier.notify(pageURL, "RTX 3080 Found!", pageURL);

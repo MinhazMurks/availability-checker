@@ -3,6 +3,10 @@ package checker;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+/**
+ * Checker for BestBuy Store.
+ * @see <a href="https://bestbuy.com">https://bestbuy.com</a>
+ */
 public class BestBuyChecker extends JSoupAvailabilityChecker {
     public BestBuyChecker(String... pageURLs) {
         super(pageURLs);

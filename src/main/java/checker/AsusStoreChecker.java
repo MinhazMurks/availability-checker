@@ -3,6 +3,10 @@ package checker;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+/**
+ * Checker for Asus Store.
+ * @see <a href="https://store.asus.com">https://store.asus.com</a>
+ */
 public class AsusStoreChecker extends SeleniumAvailabilityChecker {
     public AsusStoreChecker(String... pageURLs) {
         super(pageURLs);

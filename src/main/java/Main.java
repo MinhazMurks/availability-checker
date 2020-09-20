@@ -8,21 +8,28 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Driver class to run application.
+ */
 public class Main {
     private static final List<AvailabilityChecker> checkers = new ArrayList<>();
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(Main.class);
 
     private static void setupProperties() {
-        System.setProperty("webdriver.chrome.driver", Main.class.getClassLoader().getResource("drivers/chromedriver.exe").getFile());
+        System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/drivers/chromedriver.exe");
+        System.setProperty("webdriver.chrome.logfile", System.getProperty("user.dir") + "/drivers/chromedriver.log");
+        System.setProperty("webdriver.chrome.args", "--disable-logging");
+        System.setProperty("webdriver.chrome.verboseLogging", "false");
+        System.setProperty("webdriver.chrome.silentOutput", "true");
         Logger.getLogger("org.openqa.selenium").setLevel(Level.SEVERE);
     }
 
     private static void readLinkInput() throws IOException, ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        FileReader fileReader = new FileReader(Main.class.getClassLoader().getResource("input/websitesToCheck.txt").getFile());
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        BufferedReader bufferedReader =  new BufferedReader(new FileReader(System.getProperty("user.dir") + "/input/websitesToCheck.txt"));
         String line = bufferedReader.readLine();
 
         while(line != null) {
@@ -57,12 +64,17 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException, InterruptedException {
+    public static void main(String[] args) {
+        setupProperties();
         while(true) {
-            setupProperties();
-            readLinkInput();
-            processAllLinks();
-            Thread.sleep(1000);
+            try {
+                readLinkInput();
+                processAllLinks();
+                Thread.sleep(1000);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+                break;
+            }
         }
     }
 }

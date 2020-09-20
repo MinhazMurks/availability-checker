@@ -36,7 +36,6 @@ public abstract class SeleniumAvailabilityChecker implements AvailabilityChecker
         DriverService.Builder serviceBuilder = new ChromeDriverService.Builder().withSilent(true);
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);
-        options.addArguments("--log-level=3", "--silent");
         ChromeDriverService chromeDriverService = (ChromeDriverService)serviceBuilder.build();
         chromeDriverService.sendOutputTo(new OutputStream(){@Override public void write(int b){}});
 
@@ -47,6 +46,7 @@ public abstract class SeleniumAvailabilityChecker implements AvailabilityChecker
             String pageSource = webDriver.getPageSource();
             webDriver.quit();
             Availability availability = checkAvailability(Jsoup.parse(pageSource));
+
             if(availability == Availability.AVAILABLE) {
                 try {
                     SystemTrayNotifier.notify(pageURL, "RTX 3080 Found!", pageURL);
