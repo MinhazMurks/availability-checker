@@ -1,5 +1,6 @@
 package checker;
 
+import jdk.swing.interop.SwingInterOpUtils;
 import notification.SystemTrayNotifier;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -10,7 +11,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.service.DriverService;
 
 import java.awt.*;
@@ -32,7 +32,7 @@ public abstract class SeleniumAvailabilityChecker implements AvailabilityChecker
 
     protected abstract Availability checkAvailability(Document document);
 
-    public Map<String, Availability> isAvailable() throws IOException, InterruptedException {
+    public Map<String, Availability> isAvailable() throws InterruptedException {
         DriverService.Builder serviceBuilder = new ChromeDriverService.Builder().withSilent(true);
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);

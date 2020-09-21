@@ -25,7 +25,7 @@ public class Main {
         System.setProperty("webdriver.chrome.args", "--disable-logging");
         System.setProperty("webdriver.chrome.verboseLogging", "false");
         System.setProperty("webdriver.chrome.silentOutput", "true");
-        Logger.getLogger("org.openqa.selenium").setLevel(Level.SEVERE);
+        Logger.getLogger("org.openqa.selenium").setLevel(Level.OFF);
     }
 
     private static void readLinkInput() throws IOException, ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
