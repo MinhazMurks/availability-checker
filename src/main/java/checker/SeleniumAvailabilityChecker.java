@@ -12,6 +12,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.service.DriverService;
+import webdriver.GlobalWebDriver;
 
 import java.awt.*;
 import java.io.IOException;
@@ -33,18 +34,11 @@ public abstract class SeleniumAvailabilityChecker implements AvailabilityChecker
     protected abstract Availability checkAvailability(Document document);
 
     public Map<String, Availability> isAvailable() throws InterruptedException {
-        DriverService.Builder serviceBuilder = new ChromeDriverService.Builder().withSilent(true);
-        ChromeOptions options = new ChromeOptions();
-        options.setHeadless(true);
-        ChromeDriverService chromeDriverService = (ChromeDriverService)serviceBuilder.build();
-        chromeDriverService.sendOutputTo(new OutputStream(){@Override public void write(int b){}});
-
         Map<String, Availability> productAvailability = new HashMap<>();
         for(String pageURL : pageURLs) {
-            WebDriver webDriver = new ChromeDriver(chromeDriverService, options);
-            webDriver.get(pageURL);
-            String pageSource = webDriver.getPageSource();
-            webDriver.quit();
+            ChromeDriver chromeDriver = GlobalWebDriver.getInstance().getChromeDriver();
+            chromeDriver.get(pageURL);
+            String pageSource = chromeDriver.getPageSource();
             Availability availability = checkAvailability(Jsoup.parse(pageSource));
 
             if(availability == Availability.AVAILABLE) {

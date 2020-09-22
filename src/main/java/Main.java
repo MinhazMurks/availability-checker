@@ -1,6 +1,7 @@
 import checker.Availability;
 import checker.AvailabilityChecker;
 import org.apache.logging.log4j.LogManager;
+import webdriver.GlobalWebDriver;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
@@ -19,13 +20,12 @@ public class Main {
     private static final List<AvailabilityChecker> checkers = new ArrayList<>();
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(Main.class);
 
-    private static void setupProperties() {
-        System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/drivers/chromedriver.exe");
-        System.setProperty("webdriver.chrome.logfile", System.getProperty("user.dir") + "/drivers/chromedriver.log");
-        System.setProperty("webdriver.chrome.args", "--disable-logging");
-        System.setProperty("webdriver.chrome.verboseLogging", "false");
-        System.setProperty("webdriver.chrome.silentOutput", "true");
-        Logger.getLogger("org.openqa.selenium").setLevel(Level.OFF);
+    private static void setup() {
+        GlobalWebDriver.getInstance().initWebDriver();
+    }
+
+    private static void tearDown() {
+        GlobalWebDriver.getInstance().disposeWebDriver();
     }
 
     private static void readLinkInput() throws IOException, ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
@@ -65,15 +65,14 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        setupProperties();
+        setup();
         while(true) {
             try {
                 readLinkInput();
                 processAllLinks();
-                Thread.sleep(1000);
+                Thread.sleep(10000);
             } catch (Exception exception) {
                 exception.printStackTrace();
-                break;
             }
         }
     }
